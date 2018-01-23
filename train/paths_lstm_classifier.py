@@ -17,7 +17,7 @@ else:
 dyparams.set_mem(args.memory)
 dyparams.set_random_seed(args.seed)
 dyparams.init()
-	
+
 from lstm_common import *
 from sklearn.base import BaseEstimator
 
@@ -185,7 +185,7 @@ class PathLSTMClassifier(BaseEstimator):
                 h = W2 * dy.tanh(h) + b2
 
             path_score = dy.softmax(h).npvalue()
-            path_scores.append(path_score)
+            path_scores.append(path_score.T)
 
         path_scores = np.vstack(path_scores)
 
