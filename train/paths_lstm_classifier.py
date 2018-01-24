@@ -443,7 +443,8 @@ def load_model(model_file_prefix):
                                     num_hidden_layers=params['num_hidden_layers'])
 
     # Load the model
-    classifier.model.load(model_file_prefix + '.model')
+    #classifier.model.load(model_file_prefix + '.model')
+    classifier.model.populate(model_file_prefix + '.model')
 
     # Load the dictionaries from the json file
     with open(model_file_prefix + '.dict') as f_in:
