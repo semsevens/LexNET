@@ -1,16 +1,22 @@
 import sys
-sys.argv.insert(1, '--dynet-gpus')
-sys.argv.insert(2, '1')
-sys.argv.insert(3, '--dynet-mem')
-sys.argv.insert(4, '8192')
-sys.argv.insert(5, '--dynet-seed')
-sys.argv.insert(6, '3016748844') # Change to any seed you'd like
 
 sys.path.append('../common')
 
 from evaluation_common import *
-from paths_lstm_classifier import *
 from knowledge_resource import KnowledgeResource
+
+import argparse
+
+ap = argparse.ArgumentParser()
+ap.add_argument('corpus_prefix', help='path to the corpus resource')
+ap.add_argument('dataset_prefix', help='path to the train/test/val/rel data')
+ap.add_argument('model_prefix_file', help='where to store the result')
+ap.add_argument('-g', '--gpus', help='number of gpus to use [0,1], default=0', type=int, default=0, choices=[0,1])
+ap.add_argument('-m', '--memory', help='set dynet memory, default 8192',  default=8192)
+ap.add_argument('-s', '--seed', help='dynet random seed, pick any integer you like, default=3016748844', default=3016748844)
+args = ap.parse_args()
+
+from paths_lstm_classifier import *
 
 EMBEDDINGS_DIM = 50
 
@@ -18,9 +24,9 @@ EMBEDDINGS_DIM = 50
 def main():
 
     # The LSTM-based integrated pattern-based and distributional method for multiclass semantic relations classification
-    corpus_prefix = sys.argv[7]
-    dataset_prefix = sys.argv[8]
-    model_file_prefix = sys.argv[9]
+    corpus_prefix = args.corpus_prefix
+    dataset_prefix = args.dataset_prefix
+    model_file_prefix = args.model_prefix_file
 
     # Load the relations
     with codecs.open(dataset_prefix + '/relations.txt', 'r', 'utf-8') as f_in:
